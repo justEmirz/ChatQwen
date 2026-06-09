@@ -6,89 +6,273 @@
   <title>Zain AI</title>
 
   <style>
-    body{
-      margin:0;
-      font-family:Arial, sans-serif;
-      background:#0f0f0f;
-      color:white;
-      display:flex;
-      flex-direction:column;
-      height:100vh;
+    * {
+      margin: 0;
+      padding: 0;
+      box-sizing: border-box;
     }
 
-    .header{
-      padding:15px;
-      background:#1a1a1a;
-      text-align:center;
-      font-size:20px;
-      font-weight:bold;
-      border-bottom:1px solid #333;
+    body {
+      font-family: 'Segoe UI', Tahoma, Geneva, Verdana, sans-serif;
+      background: linear-gradient(135deg, #0f0f0f 0%, #1a0033 100%);
+      color: white;
+      display: flex;
+      flex-direction: column;
+      height: 100vh;
+      overflow: hidden;
     }
 
-    .chat-box{
-      flex:1;
-      overflow-y:auto;
-      padding:15px;
-      display:flex;
-      flex-direction:column;
-      gap:10px;
+    .header {
+      padding: 20px;
+      background: linear-gradient(135deg, #1a1a2e 0%, #2d3561 100%);
+      text-align: center;
+      font-size: 24px;
+      font-weight: bold;
+      border-bottom: 2px solid #2563eb;
+      box-shadow: 0 4px 15px rgba(37, 99, 235, 0.2);
+      display: flex;
+      align-items: center;
+      justify-content: center;
+      gap: 10px;
     }
 
-    .msg{
-      max-width:80%;
-      padding:10px 14px;
-      border-radius:12px;
-      word-wrap:break-word;
+    .header-icon {
+      font-size: 28px;
+      animation: pulse 2s infinite;
     }
 
-    .user{
-      align-self:flex-end;
-      background:#2563eb;
+    @keyframes pulse {
+      0%, 100% { opacity: 1; transform: scale(1); }
+      50% { opacity: 0.7; transform: scale(1.05); }
     }
 
-    .bot{
-      align-self:flex-start;
-      background:#262626;
+    .chat-box {
+      flex: 1;
+      overflow-y: auto;
+      padding: 20px;
+      display: flex;
+      flex-direction: column;
+      gap: 15px;
+      scroll-behavior: smooth;
+      background: linear-gradient(180deg, rgba(15, 15, 15, 0.5) 0%, rgba(45, 53, 97, 0.1) 100%);
     }
 
-    .input-area{
-      display:flex;
-      padding:10px;
-      background:#1a1a1a;
-      border-top:1px solid #333;
+    .chat-box::-webkit-scrollbar {
+      width: 8px;
     }
 
-    input{
-      flex:1;
-      padding:12px;
-      border:none;
-      outline:none;
-      border-radius:10px;
-      background:#262626;
-      color:white;
-      font-size:15px;
+    .chat-box::-webkit-scrollbar-track {
+      background: rgba(255, 255, 255, 0.05);
+      border-radius: 10px;
     }
 
-    button{
-      margin-left:10px;
-      padding:12px 18px;
-      border:none;
-      border-radius:10px;
-      background:#2563eb;
-      color:white;
-      cursor:pointer;
-      font-weight:bold;
+    .chat-box::-webkit-scrollbar-thumb {
+      background: rgba(37, 99, 235, 0.5);
+      border-radius: 10px;
     }
 
-    button:hover{
-      opacity:0.8;
+    .chat-box::-webkit-scrollbar-thumb:hover {
+      background: rgba(37, 99, 235, 0.8);
+    }
+
+    .message-container {
+      display: flex;
+      gap: 10px;
+      animation: slideIn 0.3s ease-out;
+      align-items: flex-end;
+    }
+
+    @keyframes slideIn {
+      from {
+        opacity: 0;
+        transform: translateY(10px);
+      }
+      to {
+        opacity: 1;
+        transform: translateY(0);
+      }
+    }
+
+    .message-container.user {
+      justify-content: flex-end;
+    }
+
+    .avatar {
+      width: 36px;
+      height: 36px;
+      border-radius: 50%;
+      display: flex;
+      align-items: center;
+      justify-content: center;
+      font-size: 18px;
+      font-weight: bold;
+      flex-shrink: 0;
+    }
+
+    .avatar.user {
+      background: linear-gradient(135deg, #2563eb 0%, #1e40af 100%);
+    }
+
+    .avatar.bot {
+      background: linear-gradient(135deg, #8b5cf6 0%, #6d28d9 100%);
+    }
+
+    .msg {
+      max-width: 65%;
+      padding: 12px 16px;
+      border-radius: 18px;
+      word-wrap: break-word;
+      line-height: 1.5;
+      font-size: 15px;
+      box-shadow: 0 2px 8px rgba(0, 0, 0, 0.2);
+      transition: all 0.2s ease;
+    }
+
+    .msg:hover {
+      box-shadow: 0 4px 12px rgba(0, 0, 0, 0.3);
+    }
+
+    .msg.user {
+      background: linear-gradient(135deg, #2563eb 0%, #1e40af 100%);
+      border-bottom-right-radius: 4px;
+      margin-left: auto;
+    }
+
+    .msg.bot {
+      background: linear-gradient(135deg, #374151 0%, #1f2937 100%);
+      border-bottom-left-radius: 4px;
+      border: 1px solid rgba(37, 99, 235, 0.3);
+    }
+
+    .typing-indicator {
+      display: flex;
+      gap: 4px;
+      align-items: center;
+      padding: 12px 16px;
+      background: linear-gradient(135deg, #374151 0%, #1f2937 100%);
+      border-radius: 18px;
+      border-bottom-left-radius: 4px;
+      border: 1px solid rgba(37, 99, 235, 0.3);
+      width: fit-content;
+    }
+
+    .typing-dot {
+      width: 8px;
+      height: 8px;
+      border-radius: 50%;
+      background: #2563eb;
+      animation: typing 1.4s infinite;
+    }
+
+    .typing-dot:nth-child(1) {
+      animation-delay: 0s;
+    }
+
+    .typing-dot:nth-child(2) {
+      animation-delay: 0.2s;
+    }
+
+    .typing-dot:nth-child(3) {
+      animation-delay: 0.4s;
+    }
+
+    @keyframes typing {
+      0%, 60%, 100% {
+        opacity: 0.3;
+        transform: translateY(0);
+      }
+      30% {
+        opacity: 1;
+        transform: translateY(-10px);
+      }
+    }
+
+    .input-area {
+      display: flex;
+      padding: 15px;
+      background: linear-gradient(135deg, #1a1a2e 0%, #2d3561 100%);
+      border-top: 2px solid #2563eb;
+      gap: 10px;
+      box-shadow: 0 -4px 15px rgba(37, 99, 235, 0.1);
+    }
+
+    input {
+      flex: 1;
+      padding: 12px 16px;
+      border: 1px solid rgba(37, 99, 235, 0.3);
+      outline: none;
+      border-radius: 24px;
+      background: rgba(38, 38, 38, 0.8);
+      color: white;
+      font-size: 15px;
+      font-family: 'Segoe UI', Tahoma, Geneva, Verdana, sans-serif;
+      transition: all 0.3s ease;
+    }
+
+    input:focus {
+      border-color: #2563eb;
+      background: rgba(38, 38, 38, 1);
+      box-shadow: 0 0 10px rgba(37, 99, 235, 0.3);
+    }
+
+    input::placeholder {
+      color: rgba(255, 255, 255, 0.5);
+    }
+
+    button {
+      padding: 12px 24px;
+      border: none;
+      border-radius: 24px;
+      background: linear-gradient(135deg, #2563eb 0%, #1e40af 100%);
+      color: white;
+      cursor: pointer;
+      font-weight: bold;
+      font-size: 15px;
+      transition: all 0.3s ease;
+      box-shadow: 0 4px 10px rgba(37, 99, 235, 0.3);
+      font-family: 'Segoe UI', Tahoma, Geneva, Verdana, sans-serif;
+    }
+
+    button:hover {
+      transform: translateY(-2px);
+      box-shadow: 0 6px 15px rgba(37, 99, 235, 0.5);
+    }
+
+    button:active {
+      transform: translateY(0);
+    }
+
+    button:disabled {
+      opacity: 0.6;
+      cursor: not-allowed;
+      transform: none;
+    }
+
+    @media (max-width: 768px) {
+      .msg {
+        max-width: 85%;
+      }
+
+      .header {
+        font-size: 20px;
+      }
+
+      .input-area {
+        flex-wrap: wrap;
+      }
+
+      button {
+        padding: 10px 20px;
+        font-size: 14px;
+      }
     }
   </style>
 </head>
 <body>
 
   <div class="header">
-    Zain AI 🤓
+    <span class="header-icon">🤓</span>
+    <span>Zain AI</span>
   </div>
 
   <div class="chat-box" id="chatBox"></div>
@@ -100,22 +284,77 @@
 
   <script>
     const chatBox = document.getElementById("chatBox");
+    const inputField = document.getElementById("prompt");
 
-    function addMessage(text, sender){
+    function addMessage(text, sender) {
+      const container = document.createElement("div");
+      container.className = `message-container ${sender}`;
+      
+      const avatar = document.createElement("div");
+      avatar.className = `avatar ${sender}`;
+      avatar.innerText = sender === "user" ? "👤" : "🤖";
+      
       const div = document.createElement("div");
       div.className = `msg ${sender}`;
       div.innerText = text;
-      chatBox.appendChild(div);
+      
+      if (sender === "user") {
+        container.appendChild(div);
+        container.appendChild(avatar);
+      } else {
+        container.appendChild(avatar);
+        container.appendChild(div);
+      }
+      
+      chatBox.appendChild(container);
+      scrollToBottom();
+    }
 
-      chatBox.scrollTop = chatBox.scrollHeight;
+    function addTypingIndicator() {
+      const container = document.createElement("div");
+      container.className = "message-container";
+      
+      const avatar = document.createElement("div");
+      avatar.className = "avatar bot";
+      avatar.innerText = "🤖";
+      
+      const typingDiv = document.createElement("div");
+      typingDiv.className = "typing-indicator";
+      typingDiv.id = "typingIndicator";
+      
+      for (let i = 0; i < 3; i++) {
+        const dot = document.createElement("div");
+        dot.className = "typing-dot";
+        typingDiv.appendChild(dot);
+      }
+      
+      container.appendChild(avatar);
+      container.appendChild(typingDiv);
+      chatBox.appendChild(container);
+      scrollToBottom();
+    }
+
+    function removeTypingIndicator() {
+      const typing = document.getElementById("typingIndicator");
+      if (typing) {
+        typing.parentElement.parentElement.remove();
+      }
+    }
+
+    function scrollToBottom() {
+      setTimeout(() => {
+        chatBox.scrollTop = chatBox.scrollHeight;
+      }, 0);
     }
 
     function extractText(data) {
-      // Cek struktur: data.result.text
+      console.log("Extracting text from:", data);
+      
       if (data.result && data.result.text && typeof data.result.text === 'string') {
+        console.log("Found text in data.result.text");
         return data.result.text;
       }
-      // Fallback: cek struktur lain
+      
       if (typeof data === 'string') return data;
       if (data.result && typeof data.result === 'string') return data.result;
       if (data.message && typeof data.message === 'string') return data.message;
@@ -125,39 +364,43 @@
       return "Maaf, format response tidak sesuai";
     }
 
-    async function sendMessage(){
-      const input = document.getElementById("prompt");
-      const text = input.value.trim();
+    async function sendMessage() {
+      const text = inputField.value.trim();
 
-      if(!text) return;
+      if (!text) return;
 
       addMessage(text, "user");
-      input.value = "";
+      inputField.value = "";
 
-      addMessage("Ngetik bentar anjing...", "bot");
+      addTypingIndicator();
 
-      try{
+      try {
         const response = await fetch(
           `https://api-nanzz.my.id/docs/api/ai/chat-gpt.php?text=${encodeURIComponent(text)}&model=qwen`
         );
 
         const data = await response.json();
-
-        const lastBot = document.querySelector(".msg.bot:last-of-type");
-        if(lastBot) lastBot.remove();
+        removeTypingIndicator();
 
         let hasil = extractText(data);
-
         addMessage(hasil, "bot");
 
-      }catch(err){
-        const lastBot = document.querySelector(".msg.bot:last-of-type");
-        if(lastBot) lastBot.remove();
-
+      } catch (err) {
+        removeTypingIndicator();
         addMessage("API nya mokad goblok 💀", "bot");
         console.error(err);
       }
     }
+
+    // Enter key to send
+    inputField.addEventListener("keypress", (e) => {
+      if (e.key === "Enter") {
+        sendMessage();
+      }
+    });
+
+    // Initial greeting
+    addMessage("Halo! 👋 Aku Zain AI, siap membantu. Ada yang bisa aku bantu? 😊", "bot");
   </script>
 
 </body>
