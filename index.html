@@ -111,16 +111,16 @@
     }
 
     function extractText(data) {
-      // Cek berbagai struktur response
+      // Cek struktur: data.result.text
+      if (data.result && data.result.text && typeof data.result.text === 'string') {
+        return data.result.text;
+      }
+      // Fallback: cek struktur lain
       if (typeof data === 'string') return data;
       if (data.result && typeof data.result === 'string') return data.result;
       if (data.message && typeof data.message === 'string') return data.message;
       if (data.data && typeof data.data === 'string') return data.data;
-      if (data.data && data.data.result && typeof data.data.result === 'string') return data.data.result;
-      if (data.data && data.data.message && typeof data.data.message === 'string') return data.data.message;
-      if (data.response && typeof data.response === 'string') return data.response;
       
-      // Debug: log struktur response
       console.log("API Response:", data);
       return "Maaf, format response tidak sesuai";
     }
