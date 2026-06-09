@@ -134,7 +134,8 @@
         let hasil =
           data.result ||
           data.message ||
-          JSON.stringify(data);
+          data.data ||
+          JSON.stringify(data, null, 2);
 
         addMessage(hasil, "bot");
 
