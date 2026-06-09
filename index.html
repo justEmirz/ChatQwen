@@ -123,7 +123,7 @@
 
       try{
         const response = await fetch(
-          `https://api-nanzz.my.id/docs/api/ai/chat-gpt.json?text=${encodeURIComponent(text)}&model=qwen`
+          `https://api-nanzz.my.id/docs/api/ai/chat-gpt.php?text=${encodeURIComponent(text)}&model=qwen`
         );
 
         const data = await response.json();
