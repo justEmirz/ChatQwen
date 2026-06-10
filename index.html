@@ -12,13 +12,17 @@
       box-sizing: border-box;
     }
 
+    html, body {
+      width: 100%;
+      height: 100%;
+    }
+
     body {
       font-family: 'Segoe UI', Tahoma, Geneva, Verdana, sans-serif;
       background: linear-gradient(135deg, #0f0f0f 0%, #1a0033 100%);
       color: white;
       display: flex;
       flex-direction: column;
-      height: 100vh;
       overflow: hidden;
     }
 
@@ -34,6 +38,7 @@
       align-items: center;
       justify-content: center;
       gap: 10px;
+      flex-shrink: 0;
     }
 
     .header-icon {
@@ -54,7 +59,7 @@
       flex-direction: column;
       gap: 15px;
       scroll-behavior: smooth;
-      background: linear-gradient(180deg, rgba(15, 15, 15, 0.5) 0%, rgba(45, 53, 97, 0.1) 100%);
+      min-height: 0;
     }
 
     .chat-box::-webkit-scrollbar {
@@ -194,6 +199,7 @@
       border-top: 2px solid #2563eb;
       gap: 10px;
       box-shadow: 0 -4px 15px rgba(37, 99, 235, 0.1);
+      flex-shrink: 0;
     }
 
     input {
@@ -231,6 +237,7 @@
       transition: all 0.3s ease;
       box-shadow: 0 4px 10px rgba(37, 99, 235, 0.3);
       font-family: 'Segoe UI', Tahoma, Geneva, Verdana, sans-serif;
+      flex-shrink: 0;
     }
 
     button:hover {
@@ -255,15 +262,21 @@
 
       .header {
         font-size: 20px;
+        padding: 15px;
       }
 
       .input-area {
         flex-wrap: wrap;
+        padding: 10px;
       }
 
       button {
         padding: 10px 20px;
         font-size: 14px;
+      }
+
+      input {
+        font-size: 16px;
       }
     }
   </style>
@@ -400,7 +413,9 @@
     });
 
     // Initial greeting
-    addMessage("Halo! 👋 Aku Zain AI, siap membantu. Ada yang bisa aku bantu? 😊", "bot");
+    window.addEventListener("DOMContentLoaded", () => {
+      addMessage("Halo! 👋 Aku Zain AI, siap membantu. Ada yang bisa aku bantu? 😊", "bot");
+    });
   </script>
 
 </body>
