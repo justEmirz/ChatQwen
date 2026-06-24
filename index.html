@@ -218,53 +218,6 @@ window.addEventListener(
   }
 );
 
-</script>
-
-</body>
-</html>
-    async function sendMessage() {
-      const text = inputField.value.trim();
-
-      if (!text) return;
-
-      addMessage(text, "user");
-      inputField.value = "";
-
-      addMessage("Ngetik bentar...", "bot");
-
-      try {
-        const response = await fetch(
-          `https://api-nanzz.my.id/docs/api/ai/chat-gpt.php?text=${encodeURIComponent(text)}&model=qwen`
-        );
-
-        const data = await response.json();
-
-        const lastBot = document.querySelector(".msg.bot:last-of-type");
-        if (lastBot) lastBot.remove();
-
-        let hasil = extractText(data);
-        addMessage(hasil, "bot");
-
-      } catch (err) {
-        const lastBot = document.querySelector(".msg.bot:last-of-type");
-        if (lastBot) lastBot.remove();
-
-        addMessage("API nya mokad goblok 💀", "bot");
-        console.error(err);
-      }
-    }
-
-    // Enter key to send
-    inputField.addEventListener("keypress", (e) => {
-      if (e.key === "Enter") {
-        sendMessage();
-      }
-    });
-
-    // Initial greeting
-    window.addEventListener("DOMContentLoaded", () => {
-      addMessage("Halo! 👋 Aku Zain AI, siap membantu. Ada yang bisa aku bantu? 😊", "bot");
-    });
   </script>
 
 </body>
